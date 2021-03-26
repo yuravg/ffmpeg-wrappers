@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+
+# Show multi-media file information
+
+SCRIPT_NAME=$(basename "${BASH_SOURCE##*/}")
+
+help() {
+    echo "Usage:"
+    echo "  $SCRIPT_NAME [file-name] [-v]"
+    echo
+    echo "ARGS:"
+    echo "    <file-name>"
+    echo "                 name of the input multi-media file."
+    echo "OPTIONS:"
+    echo "    -v"
+    echo "                 verbosity"
+    echo "    -vv"
+    echo "                 extra verbosity"
+}
+
+if [ "$#" -eq 0 ] || [ "$1" = '-h' ] || [ "$1" = '--help' ] || [ "$1" = '-help' ]; then
+    help
+    exit 0
+fi
+
+TYPE=""
+for i in "$@"
+do
+    case $i in
+        -v)  TYPE=1;;
+        -vv) TYPE=2;;
+    esac
+done
+
+if [ "$1" == "-v" ] || [ "$1" == "-vv" ]; then
+    FNAME="$2"
+else
+    FNAME="$1"
+fi
+
+if [ ! -s "$FNAME" ]; then
+    echo "ERROR! Can't find file: '$FNAME'!"
+    help
+    exit 1
+fi
+
+if [ -z "$TYPE" ]; then
+    ffprobe -hide_banner "$FNAME"
+else
+    if [ "$TYPE" == 2 ]; then
+        mediainfo -f "$FNAME"
+    else
+        mediainfo "$FNAME"
+    fi
+fi
