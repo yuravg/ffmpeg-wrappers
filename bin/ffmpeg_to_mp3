@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+
+# Convert audio file to mp3
+
+SCRIPT_NAME=$(basename "${BASH_SOURCE##*/}")
+
+help() {
+    echo "Usage:"
+    echo "  $SCRIPT_NAME [input-file-name] [output-file-name] [-b=bitrate]"
+    echo
+    echo "ARGS:"
+    echo "    <input-file-name>"
+    echo "                 name of the input audio file."
+    echo "    <output-file-name>"
+    echo "                 name of the output audio file."
+    echo
+    echo "OPTIONS:"
+    echo "    -b=bitrate"
+    echo "                 bitrate one of:"
+    echo "                 8,16,24,32,40,48,64,80,96,112,128,160,192,224,256,320"
+    echo "                 by default: 320"
+}
+
+if [ "$#" -lt 2 ] || [ "$1" = '-h' ] || [ "$1" = '--help' ] || [ "$1" = '-help' ]; then
+    help
+    exit 0
+fi
+
+BITRATE="320k"
+for i in "$@"
+do
+    case $i in
+        -b=320) BITRATE="320k";;
+        -b=256) BITRATE="256k";;
+        -b=224) BITRATE="224k";;
+        -b=192) BITRATE="192k";;
+        -b=160) BITRATE="160k";;
+        -b=128) BITRATE="128k";;
+        -b=112) BITRATE="112k";;
+        -b=96)  BITRATE="96k";;
+        -b=80)  BITRATE="80k";;
+        -b=64)  BITRATE="64k";;
+        -b=48)  BITRATE="48k";;
+        -b=40)  BITRATE="40k";;
+        -b=32)  BITRATE="32k";;
+        -b=24)  BITRATE="24k";;
+        -b=16)  BITRATE="16k";;
+        -b=8)   BITRATE="8k";;
+        -b=*)
+            echo "ERROR! Unknown options!"
+            help
+            exit 1;;
+    esac
+done
+
+FINPUT="$1"
+FOUT="$2"
+
+if [ ! -s "$FINPUT" ]; then
+    echo "ERROR! Can't find input file: '$FINPUT'!"
+    help
+    exit 1
+fi
+
+ffmpeg -hide_banner -i "$FINPUT" -vn -ar 44100 -ac 2 -b:a "$BITRATE" "$FOUT"
