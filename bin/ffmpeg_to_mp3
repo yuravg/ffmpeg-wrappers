@@ -53,8 +53,13 @@ do
     esac
 done
 
-FINPUT="$1"
-FOUT="$2"
+if [[ "$1" = -b=* ]]; then
+    FINPUT="$2"
+    FOUT="$3"
+else
+    FINPUT="$1"
+    FOUT="$2"
+fi
 
 if [ ! -s "$FINPUT" ]; then
     echo "ERROR! Can't find input file: '$FINPUT'!"
