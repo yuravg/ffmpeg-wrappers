@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+# Normalize audio
+
+SCRIPT_NAME=$(basename "${BASH_SOURCE##*/}")
+
+help() {
+    echo "Usage:"
+    echo "  $SCRIPT_NAME [input-file-name] [output-file-name]"
+    echo
+    echo "ARGS:"
+    echo "    <input-file-name>"
+    echo "                 name of the input audio file."
+    echo "    <output-file-name>"
+    echo "                 name of the output audio file."
+}
+
+if [ ! "$#" -eq 2 ] || [ "$1" = '-h' ] || [ "$1" = '--help' ] || [ "$1" = '-help' ]; then
+    help
+    exit 0
+fi
+
+FINPUT="$1"
+FOUT="$2"
+
+if [ ! -s "$FINPUT" ]; then
+    echo "ERROR! Can't find input file: '$FINPUT'!"
+    help
+    exit 1
+fi
+
+BITRATE=$(ffprobe -hide_banner "$FINPUT" 2>&1 | grep 'bitrate' | sed 's/.*bitrate: \([0-9]*\) .*/\1/')
+
+ffmpeg -hide_banner -i "$FINPUT" -filter:a loudnorm -b:a "$BITRATE"k "$FOUT"
