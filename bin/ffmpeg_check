@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+# Checking integrity Audio and Video content
+
+help() {
+    echo "Usage:"
+    echo "  $SCRIPT_NAME [file-name]"
+    echo
+    echo "ARGS:"
+    echo "    <file-name>"
+    echo "            Multi-media file name."
+}
+
+SCRIPT_NAME=$(basename "${BASH_SOURCE##*/}")
+if [ "$#" -ne 1 ] || [ "$1" = '-h' ] || [ "$1" = '--help' ] || [ "$1" = '-help' ]; then
+    help
+    exit 0
+fi
+
+FINPUT="$1"
+
+if [ ! -s "$FINPUT" ]; then
+    echo "ERROR! Can't find input file: '$FINPUT'!"
+    help
+    exit 1
+fi
+
+WARNINGS=$(ffprobe -hide_banner "$FINPUT" 2>&1| grep -e "^\[.*0x.*].*")
+if [ -n "$WARNINGS" ]; then
+    echo Warnings:
+    echo "$WARNINGS"
+fi
+
+ffmpeg -hide_banner -v error -i "$FINPUT" -f null -
