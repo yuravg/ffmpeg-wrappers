@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+
+# Scaling (resizing) video/image
+
+SCRIPT_NAME=$(basename "${BASH_SOURCE##*/}")
+
+help() {
+    echo "Usage:"
+    echo "  $SCRIPT_NAME [input-file-name] [output-file-name] [-s=<w:h>]"
+    echo
+    echo "ARGS:"
+    echo "    <input-file-name>"
+    echo "                 name of the input audio file."
+    echo "    <output-file-name>"
+    echo "                 name of the output audio file."
+    echo
+    echo "OPTIONS:"
+    echo "    -s=<w:h>"
+    echo "                 required output image scale: <width:hight>,"
+    echo "                 by default: 1280:720."
+    echo "                 TIPS:"
+    echo "                 - use scale arguments:"
+    echo "                    1920:1080, 1280:720, 1024:576, 854:480, 640:360, 426:240"
+    echo "                    720:-1, iw/2:ih*2, 'min(320,iw)':'min(240,ih)', etc."
+    echo "                 - use native command:"
+    echo "                    $ ffmpeg -i input.avi -vf scale=320:240 output.avi"
+}
+
+if [ "$#" -lt 2 ] || [ "$1" = '-h' ] || [ "$1" = '--help' ] || [ "$1" = '-help' ]; then
+    help
+    exit 0
+fi
+
+for i in "$@"
+do
+    case $i in
+        -s=*)
+            SCALE=$(echo $i |sed 's/-s=/scale=/')
+            ;;
+        *)
+            SCALE="scale=1280:720"
+            ;;
+    esac
+done
+
+if [[ "$1" = -s=* ]]; then
+    FINPUT="$2"
+    FOUT="$3"
+elif [[ "$2" = -s=* ]]; then
+    FINPUT="$1"
+    FOUT="$3"
+else
+    FINPUT="$1"
+    FOUT="$2"
+fi
+
+if [ ! -s "$FINPUT" ]; then
+    echo "ERROR! Can't find input file: '$FINPUT'!"
+    help
+    exit 1
+fi
+
+if [ -z "$FOUT" ]; then
+    echo "ERROR! Undefined output file name!"
+    help
+    exit 2
+fi
+
+CMD="ffmpeg -hide_banner -i $FINPUT -vf $SCALE $FOUT"
+echo "$CMD"
+$CMD
