@@ -10,15 +10,15 @@ help() {
     echo
     echo "ARGS:"
     echo "    <input-file-name>"
-    echo "                 name of the input audio file."
+    echo "            Name of the input audio file."
     echo "    <output-file-name>"
-    echo "                 name of the output audio file."
+    echo "            Name of the output audio file."
     echo
     echo "OPTIONS:"
     echo "    -b=bitrate"
-    echo "                 bitrate one of:"
-    echo "                 8,16,24,32,40,48,64,80,96,112,128,160,192,224,256,320"
-    echo "                 by default: 320"
+    echo "            Bitrate one of:"
+    echo "            8,16,24,32,40,48,64,80,96,112,128,160,192,224,256,320"
+    echo "            by default: 320"
 }
 
 if [ "$#" -lt 2 ] || [ "$1" = '-h' ] || [ "$1" = '--help' ] || [ "$1" = '-help' ]; then

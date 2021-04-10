@@ -10,12 +10,12 @@ help() {
     echo
     echo "ARGS:"
     echo "    <file-name>"
-    echo "                 name of the input multi-media file."
+    echo "            Name of the input multi-media file."
     echo "OPTIONS:"
     echo "    -v"
-    echo "                 verbosity"
+    echo "            Verbosity"
     echo "    -vv"
-    echo "                 extra verbosity"
+    echo "            Extra verbosity"
 }
 
 if [ "$#" -eq 0 ] || [ "$1" = '-h' ] || [ "$1" = '--help' ] || [ "$1" = '-help' ]; then

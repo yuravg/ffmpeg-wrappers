@@ -10,9 +10,9 @@ help() {
     echo
     echo "ARGS:"
     echo "    <input-file-name>"
-    echo "                 name of the input audio file."
+    echo "            Name of the input audio file."
     echo "    <output-file-name>"
-    echo "                 name of the output audio file."
+    echo "            Name of the output audio file."
 }
 
 if [ ! "$#" -eq 2 ] || [ "$1" = '-h' ] || [ "$1" = '--help' ] || [ "$1" = '-help' ]; then

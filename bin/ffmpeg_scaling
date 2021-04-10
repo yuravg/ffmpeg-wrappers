@@ -10,20 +10,20 @@ help() {
     echo
     echo "ARGS:"
     echo "    <input-file-name>"
-    echo "                 name of the input audio file."
+    echo "            Name of the input audio file."
     echo "    <output-file-name>"
-    echo "                 name of the output audio file."
+    echo "            Name of the output audio file."
     echo
     echo "OPTIONS:"
     echo "    -s=<w:h>"
-    echo "                 required output image scale: <width:hight>,"
-    echo "                 by default: 1280:720."
-    echo "                 TIPS:"
-    echo "                 - use scale arguments:"
-    echo "                    1920:1080, 1280:720, 1024:576, 854:480, 640:360, 426:240"
-    echo "                    720:-1, iw/2:ih*2, 'min(320,iw)':'min(240,ih)', etc."
-    echo "                 - use native command:"
-    echo "                    $ ffmpeg -i input.avi -vf scale=320:240 output.avi"
+    echo "            Required output image scale: <width:hight>,"
+    echo "            by default: 1280:720."
+    echo "             TIPS:"
+    echo "            - use scale arguments:"
+    echo "              1920:1080, 1280:720, 1024:576, 854:480, 640:360, 426:240"
+    echo "              720:-1, iw/2:ih*2, 'min(320,iw)':'min(240,ih)', etc."
+    echo "            - use native command:"
+    echo "              $ ffmpeg -i input.avi -vf scale=320:240 output.avi"
 }
 
 if [ "$#" -lt 2 ] || [ "$1" = '-h' ] || [ "$1" = '--help' ] || [ "$1" = '-help' ]; then
