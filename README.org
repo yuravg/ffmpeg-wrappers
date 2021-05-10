@@ -24,6 +24,24 @@ My collection of wrappers for [[https://ffmpeg.org/][ffmpeg]].
 
 * Tips
 
-to manage ape-files you may convert them to flac:
+- To manage ape-files you may convert them to flac:
 
+#+begin_src shell-script
 ffmpeg -i <fname.ape> <fname.flac>
+#+end_src
+
+- Concatenation files
+
+#+begin_src shell-script
+ffmpeg -f concat -i mylist.txt -c copy output
+# for absolute path (in mylist.txt):
+ffmpeg -f concat -safe 0 -i mylist.txt -c copy output
+#+end_src
+
+Where mylist.txt:
+#+begin_src text
+# this is a comment
+file '/path/to/file1'
+file '/path/to/file2'
+file '/path/to/file3'
+#+end_src
