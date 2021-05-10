@@ -13,9 +13,9 @@ help() {
     echo "            Name of the input multi-media file."
     echo "OPTIONS:"
     echo "    -v"
-    echo "            Verbosity"
+    echo "            Verbosity(the mediainfo package is used)."
     echo "    -vv"
-    echo "            Extra verbosity"
+    echo "            Extra verbosity(the mediainfo package is used)."
 }
 
 if [ "$#" -eq 0 ] || [ "$1" = '-h' ] || [ "$1" = '--help' ] || [ "$1" = '-help' ]; then
@@ -47,6 +47,11 @@ fi
 if [ -z "$TYPE" ]; then
     ffprobe -hide_banner "$FNAME"
 else
+    if ! hash mediainfo 2>/dev/null; then
+        echo "'mediainfo' was not found in PATH"
+        exit 2
+    fi
+
     if [ "$TYPE" == 2 ]; then
         mediainfo -f "$FNAME"
     else
