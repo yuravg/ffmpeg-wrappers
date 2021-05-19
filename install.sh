@@ -9,7 +9,7 @@ SCRIPT_NAME=$(basename "${BASH_SOURCE##*/}")
 
 PATH2SCRIPT="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 
-PATH2INSTALL="/home/$(whoami)/bin"
+PATH2INSTALL="${HOME}/bin"
 
 help () {
     echo "Usage:"
