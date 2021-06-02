@@ -45,3 +45,9 @@ file '/path/to/file1'
 file '/path/to/file2'
 file '/path/to/file3'
 #+end_src
+
+- Extract the audio stream without re-encoding
+
+#+begin_src shell-script
+ffmpeg -i input-video.avi -vn -acodec copy output-audio.aac
+#+end_src
