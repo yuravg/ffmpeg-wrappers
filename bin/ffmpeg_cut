@@ -2,8 +2,6 @@
 
 # Cut from multi-media file
 
-# TODO: overwrite 'duration' attribute
-
 SCRIPT_NAME=$(basename "${BASH_SOURCE##*/}")
 
 help () {
