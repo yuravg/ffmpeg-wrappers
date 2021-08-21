@@ -24,6 +24,12 @@ My collection of wrappers for [[https://ffmpeg.org/][ffmpeg]].
 
 * Tips
 
+- Run a script for every file matching .mp3 in every directory under the current
+
+#+begin_src shell-script
+for i in **/*.mp3; do script_name "$i" <arg1> <arg2>; done
+#+end_src
+
 - To manage ape-files you may convert them to flac:
 
 #+begin_src shell-script
