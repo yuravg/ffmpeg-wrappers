@@ -6,16 +6,17 @@ My collection of wrappers for [[https://ffmpeg.org/][ffmpeg]].
 
 * Contents
 
-|-------------------+--------------------------------------------|
-| File              | Description                                |
-|-------------------+--------------------------------------------|
-| [[file:bin/ffmpeg_check][ffmpeg_check]]      | Checking integrity Audio and Video content |
-| [[file:bin/ffmpeg_cut][ffmpeg_cut]]        | Cut from multi-media file                  |
-| [[file:bin/ffmpeg_info][ffmpeg_info]]       | Show multi-media file information          |
-| [[file:bin/ffmpeg_norm_audio][ffmpeg_norm_audio]] | Normalize audio                            |
-| [[file:bin/ffmpeg_scaling][ffmpeg_scaling]]    | Scaling (resizing) video/image             |
-| [[file:bin/ffmpeg_to_mp3][ffmpeg_to_mp3]]     | Convert audio file to mp3                  |
-|-------------------+--------------------------------------------|
+|--------------------+--------------------------------------------|
+| File               | Description                                |
+|--------------------+--------------------------------------------|
+| [[file:bin/ffmpeg_check][ffmpeg_check]]       | Checking integrity Audio and Video content |
+| [[file:bin/ffmpeg_cut][ffmpeg_cut]]         | Cut from multi-media file                  |
+| [[file:bin/ffmpeg_info][ffmpeg_info]]        | Show multi-media file information          |
+| [[file:bin/ffmpeg_norm_audio][ffmpeg_norm_audio]]  | Normalize audio                            |
+| [[file:bin/ffmpeg_rm_mp3metad][ffmpeg_rm_mp3metad]] | Remove all metadata from MP3 files         |
+| [[file:bin/ffmpeg_scaling][ffmpeg_scaling]]     | Scaling (resizing) video/image             |
+| [[file:bin/ffmpeg_to_mp3][ffmpeg_to_mp3]]      | Convert audio file to mp3                  |
+|--------------------+--------------------------------------------|
 
 * Installation
 
