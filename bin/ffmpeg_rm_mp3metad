@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+# Remove all metadata from MP3 files
+
+SCRIPT_NAME=$(basename "${BASH_SOURCE##*/}")
+
+help() {
+    echo "Usage:"
+    echo "  $SCRIPT_NAME [input-file-name] [output-dir-name]"
+    echo
+    echo "ARGS:"
+    echo "    <input-file-name>"
+    echo "            Name of the input audio file."
+    echo "    <output-dir-name>"
+    echo "            Name of the output directory,"
+    echo "            by default it's ./tmp"
+}
+
+
+if [ "$#" -lt 1 ] || [ "$1" = '-h' ] || [ "$1" = '--help' ] || [ "$1" = '-help' ]; then
+    help
+    exit 0
+fi
+
+FINPUT="$1"
+if [ "$#" -eq 1 ]; then
+    DIROUT="./tmp"
+else
+    DIROUT="$2"
+fi
+
+if [ ! -s "$FINPUT" ]; then
+    echo "ERROR! Can't find input file: '$FINPUT'!"
+    help
+    exit 1
+fi
+
+if [ ! -d "$DIROUT" ]; then
+    echo "ERROR! Can't find output directory: '$DIROUT'!"
+    help
+    exit 2
+fi
+
+echo ffmpeg -hide_banner -i "$FINPUT" -map 0:a -c:a copy -map_metadata -1 "$DIROUT/$FINPUT"
+ffmpeg -hide_banner -i "$FINPUT" -map 0:a -c:a copy -map_metadata -1 "$DIROUT/$FINPUT"
+
+# -map 0:a         - Includes only audio (omits all images)
+# -c:a copy        - Enables stream copy mode so re-encoding is avoided
+# -map_metadata -1 - Omits all metadata
