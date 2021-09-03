@@ -58,3 +58,8 @@ file '/path/to/file3'
 #+begin_src shell-script
 ffmpeg -i input-video.avi -vn -acodec copy output-audio.aac
 #+end_src
+
+* Links
+
+- https://github.com/slhck
+- https://github.com/leandromoreira/digital_video_introduction
