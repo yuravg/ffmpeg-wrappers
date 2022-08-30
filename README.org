@@ -31,6 +31,12 @@ My collection of wrappers for [[https://ffmpeg.org/][ffmpeg]].
 for i in **/*.mp3; do script_name "$i" <arg1> <arg2>; done
 #+end_src
 
+- Converts all mp4 files to mkv in the current directory
+
+#+begin_src shell-script
+for i in *.mp4; do ffmpeg -i "$i" "${i%.*}.mkv" ; done
+#+end_src
+
 - To manage ape-files you may convert them to flac:
 
 #+begin_src shell-script
