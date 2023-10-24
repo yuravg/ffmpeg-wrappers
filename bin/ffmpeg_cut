@@ -14,7 +14,6 @@ help () {
     echo "            Name of the input audio file."
     echo "    <output-file-name>"
     echo "            Name of the output audio file."
-    echo "            Arg description."
     echo "    <start-time>"
     echo "            Start time."
     echo "            01:02:03 - 1 hour 2nd minute 3rd second of the file."
@@ -26,7 +25,7 @@ help () {
     echo "            01:02:03 - 1 hour 2 minute 3 second of the file."
     echo "OPTIONS:"
     echo "    -l"
-    echo "            Use length instead of end time."
+    echo "            Use <length> instead of <end-time>."
     echo
     echo " Usage example:"
     echo "   $SCRIPT_NAME a.mp3 b.mp3 1:2:3 -l 10:20"
