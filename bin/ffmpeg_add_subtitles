@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+# Add subtitles to video file
+
+SCRIPT_NAME=$(basename "${BASH_SOURCE##*/}")
+
+help () {
+    echo "Usage:"
+    echo "  $SCRIPT_NAME [input-file-name] [input-subtitle-file] [output-file-name]"
+    echo
+    echo "ARGS:"
+    echo "    <input-file-name>"
+    echo "            Name of the input video file."
+    echo "    <input-subtitle-file>"
+    echo "            Name of the subtitle text file."
+    echo "    <output-file-name>"
+    echo "            Name of the output video file."
+}
+
+if [ "$#" -ne 3 ]; then
+    help
+    exit 0
+fi
+
+FINPUT="$1"
+FSUB="$2"
+FOUT="$3"
+
+if [ ! -s "$FINPUT" ]; then
+    echo "ERROR! Can't find input file: '$FINPUT'!"
+    help
+    exit 1
+fi
+
+if [ ! -s "$FSUB" ]; then
+    echo "ERROR! Can't find input file: '$FSUB'!"
+    help
+    exit 2
+fi
+
+# * Subtitles:
+# Minimum
+FLAGS="subtitles=$FSUB"
+# Add font and red color
+FLAGS="subtitles=$FSUB:force_style='Fontsize=24,PrimaryColour=&H0000ff&'"
+
+
+CMD="ffmpeg -hide_banner -i $FINPUT -vf $FLAGS -c:a copy $FOUT"
+echo "$CMD"
+$CMD
+
+# Links:
+# https://trac.ffmpeg.org/wiki/Map
+# https://stackoverflow.com/questions/60955899/use-ffmpeg-to-add-multiple-subtitles-separately-to-a-video
+
+
+# NOTE: To remove subtitles
+# ffmpeg -i input.mkv -sn -c copy output.mkv
