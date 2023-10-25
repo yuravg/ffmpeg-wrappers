@@ -54,5 +54,16 @@ $CMD
 # https://stackoverflow.com/questions/60955899/use-ffmpeg-to-add-multiple-subtitles-separately-to-a-video
 
 
+# ffmpeg -y -loglevel "repeat+info"
+# -i "file:input.mp4"
+# -i "file:subtitle.iw.vtt"
+# -i "file:subtitle.en.vtt"
+# -c copy
+# -map 0 -dn -map "-0:s" -map "-0:d"
+# -map "1:0" "-metadata:s:s:0" "language=heb" "-metadata:s:s:0" "handler_name=Hebrew"  "-metadata:s:s:0" "title=Hebrew"
+# -map "2:0" "-metadata:s:s:1" "language=eng" "-metadata:s:s:1" "handler_name=English" "-metadata:s:s:1" "title=English"
+# "file:output.mkv"
+
+
 # NOTE: To remove subtitles
 # ffmpeg -i input.mkv -sn -c copy output.mkv
