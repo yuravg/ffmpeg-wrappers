@@ -65,6 +65,21 @@ file '/path/to/file3'
 ffmpeg -i input-video.avi -vn -acodec copy output-audio.aac
 #+end_src
 
+** Subtitles
+
+Add to video with ffmpeg:
+
+#+begin_src shell-script
+ffmpeg -i sample_video_ffmpeg.mp4 -vf subtitles=sample_video_subtitle_ffmpeg.srt output_srt.mp4
+#+end_src
+
+#+begin_src shell-script
+ffmpeg -i video.mp4 -vf "subtitles=subs.srt:force_style='Fontsize=24,PrimaryColour=&H0000ff&'" -c:a copy output.mp4
+#+end_src
+
+*** Download subtitles
+ https://www.downloadyoutubesubtitles.com/
+
 * Links
 
 - https://github.com/slhck
