@@ -59,10 +59,35 @@ file '/path/to/file2'
 file '/path/to/file3'
 #+end_src
 
-*** Extract the audio stream without re-encoding
+*** Recode videos
+
+**** edit pixel format (Chroma subsampling)
+(fix unsupported format issue during playback, for example for: yuv422p10le)
+#+begin_src shell-script
+ffmpeg -i input.mp4 -vf format=yuv420p output.mp4
+#+end_src
+
+**** mkv to mp4
+
+#+begin_src shell-script
+ffmpeg -i <fname.mkv> -c:v libx264 -crf 18 -preset veryslow -c:a copy -o <fname.mp4>
+#+end_src
+
+**** mp4 to mkv
+
+#+begin_src shell-script
+ffmpeg -i input.mp4 -vcodec copy -acodec copy output.mkv
+#+end_src
+
+**** Extract the audio stream without re-encoding
 
 #+begin_src shell-script
 ffmpeg -i input-video.avi -vn -acodec copy output-audio.aac
+#+end_src
+
+**** Delete mkv titles
+#+begin_src shell-script
+mkvpropedit mult-10.mkv --delete title
 #+end_src
 
 ** Subtitles
