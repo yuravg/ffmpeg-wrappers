@@ -25,25 +25,25 @@ My collection of wrappers for [[https://ffmpeg.org/][ffmpeg]].
 
 * Tips
 
-- Run a script for every file matching .mp3 in every directory under the current
+*** Run a script for every file matching .mp3 in every directory under the current
 
 #+begin_src shell-script
 for i in **/*.mp3; do script_name "$i" <arg1> <arg2>; done
 #+end_src
 
-- Converts all mp4 files to mkv in the current directory
+*** Converts all mp4 files to mkv in the current directory
 
 #+begin_src shell-script
 for i in *.mp4; do ffmpeg -i "$i" "${i%.*}.mkv" ; done
 #+end_src
 
-- To manage ape-files you may convert them to flac:
+*** To manage ape-files you may convert them to flac:
 
 #+begin_src shell-script
 ffmpeg -i <fname.ape> <fname.flac>
 #+end_src
 
-- Concatenation files
+*** Concatenation files
 
 #+begin_src shell-script
 ffmpeg -f concat -i mylist.txt -c copy output
@@ -59,7 +59,7 @@ file '/path/to/file2'
 file '/path/to/file3'
 #+end_src
 
-- Extract the audio stream without re-encoding
+*** Extract the audio stream without re-encoding
 
 #+begin_src shell-script
 ffmpeg -i input-video.avi -vn -acodec copy output-audio.aac
