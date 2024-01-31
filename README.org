@@ -102,6 +102,14 @@ ffmpeg -i sample_video_ffmpeg.mp4 -vf subtitles=sample_video_subtitle_ffmpeg.srt
 ffmpeg -i video.mp4 -vf "subtitles=subs.srt:force_style='Fontsize=24,PrimaryColour=&H0000ff&'" -c:a copy output.mp4
 #+end_src
 
+https://www.baeldung.com/linux/subtitles-ffmpeg
+https://en.wikibooks.org/wiki/FFMPEG_An_Intermediate_Guide/subtitle_options
+
+#+begin_src shell-script
+ffmpeg -i input.mp4 -i subtitle.srt -c copy -c:s mov_text -metadata:s:s:0 language=eng output_.mp4
+ffmpeg -i input.mp4 -i subtitle.srt -map 0 -map 1 -c copy -c:s mov_text -metadata:s:s:1 language=rus output.mp4
+#+end_src
+
 *** Download subtitles
  https://www.downloadyoutubesubtitles.com/
 
