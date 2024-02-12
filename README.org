@@ -45,6 +45,7 @@ ffmpeg -i <fname.ape> <fname.flac>
 
 *** Concatenation files
 
+**** Way 1
 #+begin_src shell-script
 ffmpeg -f concat -i mylist.txt -c copy output
 # for absolute path (in mylist.txt):
@@ -57,6 +58,16 @@ Where mylist.txt:
 file '/path/to/file1'
 file '/path/to/file2'
 file '/path/to/file3'
+#+end_src
+
+**** Way 2
+#+begin_src shell-script
+cat fname1.mkv fname2.mkv fname3.mkv | ffmpeg -i - -c:v copy -c:a copy out.mkv
+#+end_src
+
+**** Way 3 (with re-coding)
+#+begin_src shell-script
+cat fname1.mkv fname2.mkv fname3.mkv | ffmpeg -i - -c:v libx265 -vtag hvc1 -c:a copy out.mkv
 #+end_src
 
 *** Recode videos
