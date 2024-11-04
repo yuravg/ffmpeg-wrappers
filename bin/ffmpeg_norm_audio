@@ -31,4 +31,4 @@ fi
 
 BITRATE=$(ffprobe -hide_banner "$FINPUT" 2>&1 | grep 'bitrate:' | sed 's/.*bitrate: \([0-9]*\) .*/\1/')
 
-ffmpeg -hide_banner -i "$FINPUT" -filter:a loudnorm -b:a "$BITRATE"k "$FOUT"
+ffmpeg -hide_banner -i $FINPUT -af loudnorm=I=-14:TP=-1.5:LRA=11 -b:a ${BITRATE}k $FOUT
