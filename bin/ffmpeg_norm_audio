@@ -29,6 +29,6 @@ if [ ! -s "$FINPUT" ]; then
     exit 1
 fi
 
-BITRATE=$(ffprobe -hide_banner "$FINPUT" 2>&1 | grep 'bitrate' | sed 's/.*bitrate: \([0-9]*\) .*/\1/')
+BITRATE=$(ffprobe -hide_banner "$FINPUT" 2>&1 | grep 'bitrate:' | sed 's/.*bitrate: \([0-9]*\) .*/\1/')
 
 ffmpeg -hide_banner -i "$FINPUT" -filter:a loudnorm -b:a "$BITRATE"k "$FOUT"

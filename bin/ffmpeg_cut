@@ -72,6 +72,6 @@ else
     END_TASK="-to $4"
 fi
 
-BITRATE=$(ffprobe -hide_banner "$FINPUT" 2>&1 | grep 'bitrate' | sed 's/.*bitrate: \([0-9]*\) .*/\1/')
+BITRATE=$(ffprobe -hide_banner "$FINPUT" 2>&1 | grep 'bitrate:' | sed 's/.*bitrate: \([0-9]*\) .*/\1/')
 
 ffmpeg -hide_banner -i "$FINPUT" -ss "$START_TIME" $END_TASK -b:a "$BITRATE"k "$FOUT"
