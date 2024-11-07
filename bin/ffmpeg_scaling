@@ -66,6 +66,4 @@ if [ -z "$FOUT" ]; then
     exit 2
 fi
 
-CMD="ffmpeg -hide_banner -i $FINPUT -vf $SCALE $FOUT"
-echo "$CMD"
-$CMD
+ffmpeg -hide_banner -i "$FINPUT" -vf $SCALE "$FOUT"
