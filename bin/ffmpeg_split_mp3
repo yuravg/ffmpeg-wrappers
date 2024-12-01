@@ -1,0 +1,153 @@
+#!/bin/bash
+
+# Split an MP3 file into smaller segments with optional overlap,
+# preserving the original audio quality.
+
+help () {
+    SCRIPT_NAME=$(basename "${BASH_SOURCE##*/}")
+    echo "Usage:"
+    echo "  $SCRIPT_NAME [input-file-name] [--segment=hh:mm:ss] [--overlap=hh:mm:ss]"
+    echo
+    echo "ARGS:"
+    echo "    <input-file-name>"
+    echo "            Path to the input audio file."
+    echo "OPTIONS:"
+    echo "    --segment=hh:mm:ss"
+    echo "            Specifies the duration of each audio segment."
+    echo "    --overlap=hh:mm:ss"
+    echo "            Specifies the overlap duration between consecutive segments."
+    echo
+    echo " Usage example:"
+    echo "   $SCRIPT_NAME fname.mp3 --segment=1:2:3 --overlap=0:1:10"
+}
+
+if [ ! "$#" -eq 3 ]; then
+    echo "ERROR! Incorrect number of input options!"
+    help
+    exit 1
+fi
+
+FNAME="$1"
+SEGMENT_DURATION=""
+OVERLAP_DURATION=""
+
+for arg in "$@"; do
+    case $arg in
+        --segment=*)
+            SEGMENT_DURATION="${arg#*=}"
+            ;;
+        --overlap=*)
+            OVERLAP_DURATION="${arg#*=}"
+            ;;
+        *)
+            ;;
+    esac
+done
+
+if [ -z "$FNAME" ] || [ -z "$SEGMENT_DURATION" ] || [ -z "$OVERLAP_DURATION" ]; then
+    help
+    exit 0
+fi
+
+if [ ! -f "$FNAME" ]; then
+    echo "ERROR! File '$FNAME' does not exist."
+    exit 1
+fi
+
+BASE_NAME=$(basename "$FNAME" .mp3)
+EXT=".mp3"
+
+time_to_seconds() {
+    local time="$1"
+    if [[ ! "$time" =~ ^[0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$ ]]; then
+        echo "ERROR! Invalid time format '$time'. Expected format is hh:mm:ss."
+        exit 1
+    fi
+    IFS=: read -r h m s <<<"$time"
+    h=$(echo "$h" | sed 's/^0*//')
+    m=$(echo "$m" | sed 's/^0*//')
+    s=$(echo "$s" | sed 's/^0*//')
+    echo $((h * 3600 + m * 60 + s))
+}
+
+
+# Convert seconds back to hh:mm:ss format
+seconds_to_time() {
+    local total_seconds="$1"
+    printf "%02d:%02d:%02d" $((total_seconds / 3600)) $(((total_seconds % 3600) / 60)) $((total_seconds % 60))
+}
+
+SEGMENT_DURATION_sec=$(time_to_seconds "$SEGMENT_DURATION")
+OVERLAP_DURATION_sec=$(time_to_seconds "$OVERLAP_DURATION")
+
+duration=$(ffmpeg -i "$FNAME" 2>&1 | grep Duration | awk '{print $2}' | tr -d ,)
+if [[ ! "$duration" =~ ^[0-9]{2}:[0-9]{2}:[0-9]{2} ]]; then
+    echo "ERROR! Could not EXTract a valid sound duration from file: '$FNAME'!"
+    exit 1
+fi
+
+TOTAL_SECONDS=$(time_to_seconds "${duration%.*}")
+
+START_TIME=0
+SEGMENT_INDEX=1
+
+echo "Expected output:"
+while [ "$START_TIME" -lt "$TOTAL_SECONDS" ]; do
+    END_TIME=$((START_TIME + SEGMENT_DURATION_sec))
+
+    OVERLAP_START_TIME=$((START_TIME - OVERLAP_DURATION_sec))
+    if [ "$OVERLAP_START_TIME" -lt 0 ]; then
+        OVERLAP_START_TIME="$START_TIME"
+    fi
+
+    if [ "$END_TIME" -gt "$TOTAL_SECONDS" ]; then
+        END_TIME="$TOTAL_SECONDS"
+    fi
+
+    echo "${BASE_NAME}_$(printf "%02d" "$SEGMENT_INDEX")$EXT $(seconds_to_time "$OVERLAP_START_TIME") - $(seconds_to_time "$END_TIME")"
+
+    START_TIME=$((START_TIME + SEGMENT_DURATION_sec))
+
+    if [ "$START_TIME" -ge "$TOTAL_SECONDS" ]; then
+        break
+    fi
+
+    ((SEGMENT_INDEX++))
+done
+
+echo "Would you like to continue? (yes/no)"
+read -r RESPONSE
+
+if [[ ! "$RESPONSE" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+    echo "Operation aborted by user."
+    exit 0
+fi
+
+START_TIME=0
+SEGMENT_INDEX=1
+
+while [ "$START_TIME" -lt "$TOTAL_SECONDS" ]; do
+    END_TIME=$((START_TIME + SEGMENT_DURATION_sec))
+
+    OVERLAP_START_TIME=$((START_TIME - OVERLAP_DURATION_sec))
+    if [ "$OVERLAP_START_TIME" -lt 0 ]; then
+        OVERLAP_START_TIME="$START_TIME"
+    fi
+
+    if [ "$END_TIME" -gt "$TOTAL_SECONDS" ]; then
+        END_TIME="$TOTAL_SECONDS"
+    fi
+
+    OUTPUT_FILE="${BASE_NAME}_$(printf "%02d" "$SEGMENT_INDEX")$EXT"
+    echo "--------------------------------------------------------------------------------------"
+    echo ffmpeg -hide_banner -i "$FNAME" -ss "$(seconds_to_time "$OVERLAP_START_TIME")" -to "$(seconds_to_time "$END_TIME")" -c copy "$OUTPUT_FILE"
+    ffmpeg -hide_banner -i "$FNAME" -ss "$(seconds_to_time "$OVERLAP_START_TIME")" -to "$(seconds_to_time "$END_TIME")" -c copy "$OUTPUT_FILE"
+
+    START_TIME=$((START_TIME + SEGMENT_DURATION_sec))
+
+    if [ "$START_TIME" -ge "$TOTAL_SECONDS" ]; then
+        break
+    fi
+
+    ((SEGMENT_INDEX++))
+done
