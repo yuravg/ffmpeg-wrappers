@@ -97,8 +97,15 @@ ffmpeg -i input-video.avi -vn -acodec copy output-audio.aac
 #+end_src
 
 **** Delete mkv titles
+
 #+begin_src shell-script
 mkvpropedit mult-10.mkv --delete title
+#+end_src
+
+**** flac to mp3
+
+#+begin_src shell-script
+for i in *.flac; do ffmpeg_to_mp3 "$i" "${i%.*}.mp3"; done
 #+end_src
 
 ** Subtitles
